@@ -13,5 +13,16 @@ namespace SampleDuplicateFileFinder
     /// </summary>
     public partial class App : Application
     {
+        static App()
+        {
+            Current = null!;
+        }
+        public App()
+        {
+            Current = this;
+        }
+
+        public new static App Current { get; private set; }
+        public static string Name => Constant.AppName;
     }
 }

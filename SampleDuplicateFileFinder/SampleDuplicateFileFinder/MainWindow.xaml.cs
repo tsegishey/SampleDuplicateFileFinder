@@ -23,6 +23,17 @@ namespace SampleDuplicateFileFinder
         public MainWindow()
         {
             InitializeComponent();
+            BindingCommands();
+            Title = App.Name;
+            DataContext = this;
+        }
+
+        private void BindingCommands()
+        {
+            CommandBindings.Add(new CommandBinding(AppCommands.Exit, (s, a) => Close()));
         }
     }
 }
+
+
+

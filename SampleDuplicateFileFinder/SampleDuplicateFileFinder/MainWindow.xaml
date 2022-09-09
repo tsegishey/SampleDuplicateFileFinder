@@ -8,7 +8,9 @@
         Title="Sample Duplicate File Finder"
         Height="400" Width="600"
         Background="LightGray">
-    <Grid>
-
-    </Grid>
+    <Menu>
+        <MenuItem Header="File">
+            <MenuItem Command="{x:Static local:AppCommands.Exit}"/>
+        </MenuItem>
+    </Menu>
 </Window>
