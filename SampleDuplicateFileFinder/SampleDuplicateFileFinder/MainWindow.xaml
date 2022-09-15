@@ -12,5 +12,8 @@
         <MenuItem Header="File">
             <MenuItem Command="{x:Static local:AppCommands.Exit}"/>
         </MenuItem>
+        <MenuItem Header="Help">
+            <MenuItem Command="{x:Static local:AppCommands.About}"/>
+        </MenuItem>
     </Menu>
 </Window>

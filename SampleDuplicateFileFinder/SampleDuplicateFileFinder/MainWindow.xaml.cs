@@ -1,17 +1,9 @@
-﻿using System;
+﻿using SampleDuplicateFileFinder.Dialog;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace SampleDuplicateFileFinder
 {
@@ -28,9 +20,22 @@ namespace SampleDuplicateFileFinder
             DataContext = this;
         }
 
+        private void ShowAboutDialogBox()
+        {
+            var dialogBox = new AboutDialogBox
+            {
+                Owner = this
+            };
+
+            dialogBox.ShowDialog();
+        }
+
         private void BindingCommands()
         {
+            // File Exit 
             CommandBindings.Add(new CommandBinding(AppCommands.Exit, (s, a) => Close()));
+            // Help About
+            CommandBindings.Add(new CommandBinding(AppCommands.About, (s, a) => ShowAboutDialogBox()));
         }
     }
 }
