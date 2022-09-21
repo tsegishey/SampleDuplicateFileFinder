@@ -20,14 +20,14 @@ namespace SampleDuplicateFileFinder.Views
     /// <summary>
     /// Interaction logic for FindDuplicateFileView.xaml
     /// </summary>
-    public partial class FindDuplicateFileView : Window
+    public partial class FindDuplicateFileView : UserControl
     {
         public FindDuplicateFileView()
         {
             InitializeComponent();
             Drives = new ObservableCollection<DriveViewModel>();
-            var diskDrives = DriveInfo.GetDrives().Where(x => x.IsReady).Select(x => new DriveViewModel(x));
-            foreach(DriveViewModel drive in diskDrives)
+            var driveList = DriveInfo.GetDrives().Where(x => x.IsReady).Select(x => new DriveViewModel(x));
+            foreach(DriveViewModel drive in driveList)
             {
                 Drives.Add(drive);
             }
@@ -35,5 +35,12 @@ namespace SampleDuplicateFileFinder.Views
         }
 
         public ObservableCollection<DriveViewModel> Drives { get; set; }
+
+        private void CheckBoxDrive_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox chkDrive = (CheckBox)sender;
+            var note = $"Drive Name {chkDrive.Content} ";
+            textBlock.Text = (bool)chkDrive.IsChecked ? $"{note} is selected" : $"{note} is unselected";
+        }
     }
 }

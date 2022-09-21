@@ -3,17 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SampleDuplicateFileFinder"
+        xmlns:local="clr-namespace:SampleDuplicateFileFinder" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Sample Duplicate File Finder"
         Height="400" Width="600"
-        Background="LightGray">
-    <Menu>
-        <MenuItem Header="File">
-            <MenuItem Command="{x:Static local:AppCommands.Exit}"/>
-        </MenuItem>
-        <MenuItem Header="Help">
-            <MenuItem Command="{x:Static local:AppCommands.About}"/>
-        </MenuItem>
-    </Menu>
+        Background="LightGray"
+        d:DataContext="{d:DesignInstance Type=local:MainWindow, IsDesignTimeCreatable=True}">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="{x:Static local:AppCommands.Exit}"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Command="{x:Static local:AppCommands.About}"/>
+            </MenuItem>
+        </Menu>
+        <Border Background="Gainsboro">
+            <Border Margin="6" CornerRadius="3" BorderBrush="LightGray" BorderThickness="4" Background="WhiteSmoke">
+                <DockPanel>
+                    <Separator DockPanel.Dock="Bottom" Background="LightGray"/>
+                    <xctk:BusyIndicator IsBusy="{Binding IsBusy}">
+                            <ContentControl IsTabStop="False"
+                                        Content="{Binding CurrentView}"
+                                        Background="WhiteSmoke" />
+                        </xctk:BusyIndicator>
+                </DockPanel>
+            </Border>
+        </Border>
+    </DockPanel>
 </Window>

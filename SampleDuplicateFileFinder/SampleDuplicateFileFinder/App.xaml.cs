@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ninject;
+using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace SampleDuplicateFileFinder
@@ -31,8 +33,17 @@ namespace SampleDuplicateFileFinder
             //throw new Exception("Big Error");
         }
 
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ConfigureKernal();
+        }
+
+        private void ConfigureKernal() => Kernel = new StandardKernel();
+
         public new static App Current { get; private set; }
         public static string Name => Constant.AppName;
+        public IKernel Kernel { get; private set; }
         public static string ErrorMessage => Constant.AppErrorTerminate;
         static void AppEventHandler(object sender, UnhandledExceptionEventArgs args)
         {
