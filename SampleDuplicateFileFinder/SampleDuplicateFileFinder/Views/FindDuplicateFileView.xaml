@@ -4,26 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SampleDuplicateFileFinder.Views"
-        mc:Ignorable="d"
+        xmlns:converters="clr-namespace:SmartDuplicateFinder.Converters"
+             mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         d:DataContext="{d:DesignInstance Type=local:FindDuplicateFileView, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <converters:GetIcon x:Key="_getIcon" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="auto" MinWidth="130" MaxWidth="300"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <!--<ListBox Grid.Column="0" ItemsSource="{Binding Path=Drives}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=Name}"></TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
         <ListBox Grid.Column="0" ItemsSource="{Binding Path=Drives}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox Name="CheckBoxDrive" Content="{Binding Name}" Tag="{Binding Name}" Click="CheckBoxDrive_Click"/>
+                    <CheckBox Name="CheckBoxDrive"
+                        VerticalContentAlignment="Center" 
+                        IsEnabled="{Binding IsSelectable}"
+                        IsChecked="{Binding Path=IsSelected}" Click="CheckBoxDrive_Click">
+                        <CheckBox.Content>
+                            <DockPanel>
+                                <Image DockPanel.Dock="Left" VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource _getIcon}}" />
+                                <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}" />
+                            </DockPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+                    <!--<CheckBox Name="CheckBoxDrive" Content="{Binding Name}" Tag="{Binding Name}" Click="CheckBoxDrive_Click"/>-->
+                    <!--<CheckBox Name="CheckBoxDrive" Content="{Binding DisplayName}" Tag="{Binding DisplayName}" IsChecked ="{Binding Path=IsSelected}" Click="CheckBoxDrive_Click"/>-->
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
