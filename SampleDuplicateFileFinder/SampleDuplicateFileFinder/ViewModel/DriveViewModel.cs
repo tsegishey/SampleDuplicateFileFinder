@@ -1,6 +1,7 @@
 ﻿using PropertyChanged;
 using SmartDuplicateFinder.Utils;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -27,11 +28,16 @@ public class DriveViewModel: INotifyPropertyChanged
             DriveType.Removable => Icons.RemovableDrive,
             _ => Icons.UnknownDrive
         };
+
         IsSelectable = (DriveInfo.IsReady);
         Name = (DriveInfo.IsReady) ? driveInfo.Name[..^1] : $"({DriveInfo.Name[..^1]})";
-        DisplayName = (DriveInfo.IsReady) ? $"{DriveInfo.VolumeLabel} ({DriveInfo.Name[..^1]})" : Name;       
+        DisplayName = (DriveInfo.IsReady) ? $"{DriveInfo.VolumeLabel} ({DriveInfo.Name[..^1]})" : Name;
         TotalSize = driveInfo.TotalSize;
         TotalFreeSpace = driveInfo.TotalFreeSpace;
+        SubFolder = new ObservableCollection<DirectoryViewModel>
+        {
+            DirectoryViewModel.UnExpanded
+        };
     }
 
     public Icons Icon { get; private set; } 
@@ -42,6 +48,7 @@ public class DriveViewModel: INotifyPropertyChanged
     public bool IsSelectable { get; set; }
     public bool IsSelected { get; set; }
     public DriveInfo DriveInfo { get; private set; }
+    public ObservableCollection<DirectoryViewModel> SubFolder { get; private set; }
 
     private static readonly string s_systemDrive;
 }

@@ -26,7 +26,6 @@ namespace SampleDuplicateFileFinder.Dialog
     {
         CommandBindings.Add(new CommandBinding(AppCommands.Ok, (s, a) => Close()));
     }
-
 }
 }
 

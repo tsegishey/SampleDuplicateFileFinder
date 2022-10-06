@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SampleDuplicateFileFinder.Views"
         xmlns:converters="clr-namespace:SmartDuplicateFinder.Converters"
-             mc:Ignorable="d"
+        xmlns:viewModel ="clr-namespace:SampleDuplicateFileFinder.ViewModel"
+        mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         d:DataContext="{d:DesignInstance Type=local:FindDuplicateFileView, IsDesignTimeCreatable=True}">
     <UserControl.Resources>
@@ -17,26 +18,41 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" ItemsSource="{Binding Path=Drives}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox Name="CheckBoxDrive"
+        <DockPanel Grid.Column="0" Margin="6,0,6,0" Height="450" VerticalAlignment="Top">
+            <Label DockPanel.Dock ="Top" Content = "Drives:"/>
+            <TreeView Padding ="0,0,60,0" ItemsSource="{Binding Drives}" TreeViewItem.Expanded="TreeView_Expanded">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type viewModel:DriveViewModel}" ItemsSource="{Binding SubFolder}">
+                        <CheckBox Name="CheckBoxDrive"
                         VerticalContentAlignment="Center" 
                         IsEnabled="{Binding IsSelectable}"
                         IsChecked="{Binding Path=IsSelected}" Click="CheckBoxDrive_Click">
-                        <CheckBox.Content>
-                            <DockPanel>
-                                <Image DockPanel.Dock="Left" VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource _getIcon}}" />
-                                <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}" />
-                            </DockPanel>
-                        </CheckBox.Content>
-                    </CheckBox>
-                    <!--<CheckBox Name="CheckBoxDrive" Content="{Binding Name}" Tag="{Binding Name}" Click="CheckBoxDrive_Click"/>-->
-                    <!--<CheckBox Name="CheckBoxDrive" Content="{Binding DisplayName}" Tag="{Binding DisplayName}" IsChecked ="{Binding Path=IsSelected}" Click="CheckBoxDrive_Click"/>-->
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                            <CheckBox.Content>
+                                <DockPanel>
+                                    <Image DockPanel.Dock="Left" VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource _getIcon}}" />
+                                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}" />
+                                </DockPanel>
+                            </CheckBox.Content>
+                        </CheckBox>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type viewModel:DirectoryViewModel}" ItemsSource="{Binding SubFolder}">
+                        <CheckBox Name="CheckBoxDrive"
+                        VerticalContentAlignment="Center" 
+                        IsEnabled="{Binding IsSelectable}"
+                        IsChecked="{Binding Path=IsSelected}" Click="CheckBoxDrive_Click">
+                            <CheckBox.Content>
+                                <DockPanel>
+                                    <Image DockPanel.Dock="Left" VerticalAlignment="Center" Source="{Binding Icon, Converter={StaticResource _getIcon}}" />
+                                    <Label DockPanel.Dock="Left" VerticalAlignment="Center" Content="{Binding DisplayName}" />
+                                </DockPanel>
+                            </CheckBox.Content>
+                        </CheckBox>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+            </TreeView>
+        </DockPanel>
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"></GridSplitter>
         <TextBlock  Name="textBlock"  Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" >Duplicate file container</TextBlock>
+        <Button Grid.Column="2" VerticalAlignment="Top" DockPanel.Dock ="Bottom" HorizontalAlignment="left" Width="76" Click="Button_Click">Refresh</Button>
     </Grid>
 </UserControl>
