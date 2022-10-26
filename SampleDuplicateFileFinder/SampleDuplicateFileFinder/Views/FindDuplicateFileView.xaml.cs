@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -25,10 +26,11 @@ namespace SampleDuplicateFileFinder.Views
         private void OnRefresh()
         {
             Drives.Clear();
-            var driveList = DriveInfo.GetDrives().Where(x => x.IsReady).Select(x => new DriveViewModel(x));
-            foreach (DriveViewModel drive in driveList)
+
+            IEnumerable<DriveViewModel> drives = DriveInfo.GetDrives().Where(d => d.IsReady).Select(d => new DriveViewModel(d));
+            foreach (DriveViewModel driver in drives)
             {
-                Drives.Add(drive);
+                Drives.Add(driver);
             }
         }
 
@@ -44,34 +46,16 @@ namespace SampleDuplicateFileFinder.Views
         private void TreeView_Expanded(object sender, RoutedEventArgs e)
         {
             var treeViewItem = (TreeViewItem)e.OriginalSource;
-            if (treeViewItem.DataContext is DirectoryViewModel parent)
-            {
-                if(!(parent.SubFolder.Count == 1 && parent.SubFolder[0] == DirectoryViewModel.UnExpanded))
-                    return;
-                parent.SubFolder.Clear();
-                var option = new EnumerationOptions();
-                foreach (var directoryInfo in parent.DirectoryInfo.GetDirectories("*", option))
-                {
-                    parent.SubFolder.Add(new DirectoryViewModel(directoryInfo));
-                }
-            } 
-            else if (treeViewItem.DataContext is DriveViewModel drive)
-            {
-                if (!(drive.SubFolder.Count == 1 && drive.SubFolder[0] == DirectoryViewModel.UnExpanded))
-                    return;
-                drive.SubFolder.Clear();
-                var option = new EnumerationOptions();
-                foreach (var directoryInfo in drive.DriveInfo.RootDirectory.GetDirectories("*", option))
-                {
-                    drive.SubFolder.Add(new DirectoryViewModel(directoryInfo));
-                }
-            }
+            var parent = (DirectoryViewModel)treeViewItem.DataContext;
+
+            parent.LoadSubFolders();
         }
+
 
         private void BindingCommands()
         {
             // File Refersh 
-            //CommandBindings.Add(new CommandBinding(AppCommands.Refresh, (s, a) => ()));
+            CommandBindings.Add(new CommandBinding(AppCommands.Refresh, (s, a) => OnRefresh()));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

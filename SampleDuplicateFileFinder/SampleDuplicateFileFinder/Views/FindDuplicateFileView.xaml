@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:SampleDuplicateFileFinder.Views"
         xmlns:converters="clr-namespace:SmartDuplicateFinder.Converters"
         xmlns:viewModel ="clr-namespace:SampleDuplicateFileFinder.ViewModel"
+        xmlns:sampleDuplicateFileFinder="clr-namespace:SampleDuplicateFileFinder"
         mc:Ignorable="d"
         d:DesignHeight="450" d:DesignWidth="800"
         d:DataContext="{d:DesignInstance Type=local:FindDuplicateFileView, IsDesignTimeCreatable=True}">
@@ -18,8 +19,17 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0" Margin="6,0,6,0" Height="450" VerticalAlignment="Top">
+        <DockPanel Grid.Column="0" Margin="6,0,6,0" >
             <Label DockPanel.Dock ="Top" Content = "Drives:"/>
+
+            <DockPanel DockPanel.Dock="Bottom"
+                       Margin="0,6"
+                       LastChildFill="False">
+
+                <Button DockPanel.Dock="Left" 
+                        Command="{x:Static sampleDuplicateFileFinder:AppCommands.Refresh}"
+                        Content="{Binding Command.Text, RelativeSource={RelativeSource self} }" />
+            </DockPanel>
             <TreeView Padding ="0,0,60,0" ItemsSource="{Binding Drives}" TreeViewItem.Expanded="TreeView_Expanded">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type viewModel:DriveViewModel}" ItemsSource="{Binding SubFolder}">
@@ -53,6 +63,5 @@
         </DockPanel>
         <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"></GridSplitter>
         <TextBlock  Name="textBlock"  Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" >Duplicate file container</TextBlock>
-        <Button Grid.Column="2" VerticalAlignment="Top" DockPanel.Dock ="Bottom" HorizontalAlignment="left" Width="76" Click="Button_Click">Refresh</Button>
     </Grid>
 </UserControl>
